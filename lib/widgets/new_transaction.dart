@@ -5,7 +5,7 @@ import 'package:intl/intl.dart';
 class NewTransaction extends StatefulWidget {
   final Function addTx;
 
-  NewTransaction(this.addTx);
+  const NewTransaction(this.addTx, {Key? key}) : super(key: key);
 
   @override
   _NewTransactionState createState() => _NewTransactionState();
@@ -14,7 +14,7 @@ class NewTransaction extends StatefulWidget {
 class _NewTransactionState extends State<NewTransaction> {
   final _titleController = TextEditingController();
   final _amountController = TextEditingController();
-  late DateTime _selectedDate;
+  DateTime _selectedDate = DateTime.now();
 
   void _submitData() {
     if (_amountController.text.isEmpty) {
@@ -23,7 +23,7 @@ class _NewTransactionState extends State<NewTransaction> {
     final enteredTitle = _titleController.text;
     final enteredAmount = double.parse(_amountController.text);
 
-    if (enteredTitle.isEmpty || enteredAmount <= 0 || _selectedDate == null) {
+    if (enteredTitle.isEmpty || enteredAmount <= 0 || _selectedDate == isNull) {
       return;
     }
 
@@ -83,7 +83,7 @@ class _NewTransactionState extends State<NewTransaction> {
                 children: <Widget>[
                   Expanded(
                     child: Text(
-                      _selectedDate == null
+                      _selectedDate == isNull
                           ? 'No Date Chosen!'
                           : 'Picked Date: ${DateFormat.yMd().format(_selectedDate)}',
                     ),
@@ -116,10 +116,13 @@ class _NewTransactionState extends State<NewTransaction> {
     );
   }
 
+  Null get isNull => null;
+
   @override
   void debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super.debugFillProperties(properties);
     properties
         .add(DiagnosticsProperty<DateTime>('_selectedDate', _selectedDate));
+        properties.add(DiagnosticsProperty<DateTime>('_selectedDate', _selectedDate));
   }
 }
